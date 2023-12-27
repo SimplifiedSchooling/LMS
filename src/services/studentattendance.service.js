@@ -3,14 +3,15 @@ const mongoose = require('mongoose');
 const moment = require('moment');
 const { Student, StudentAttendanceSchema, StudentSession } = require('../models');
 const ApiError = require('../utils/ApiError');
-// /**
-//  * Create a StudentAttendanceSchema
-//  * @param {Object} StudentAttendanceSchemaBody
-//  * @returns {Promise<StudentAttendanceSchema>}
-//  */
-// const createStudentAttendance = async (StudentAttendanceSchemaBody) => {
-//   return StudentAttendanceSchema.create(StudentAttendanceSchemaBody);
-// };
+/**
+ * Create a StudentAttendanceSchema
+ * @param {Object} StudentAttendanceSchemaBody
+ * @returns {Promise<StudentAttendanceSchema>}
+ */
+const createStudentAttendanceNew = async (StudentAttendanceSchemaBody) => {
+  return StudentAttendanceSchema.create(StudentAttendanceSchemaBody);
+};
+
 /**
  * Create a StudentAttendanceSchema
  * @param {Object} StudentAttendanceSchemaBody
@@ -791,6 +792,23 @@ const updateStudentAttendance = async (scode, classId, sectionId, date, entryUpd
   return result.nModified > 0;
 };
 
+/**
+ * Create or update lecture attendance
+ * @param {Object} StudentAttendanceSchemaBody - The lecture attendance data to be created or updated.
+ * @returns {Promise<boolean>} - Returns true if the update is successful.
+ * @throws {Error} - If there is an error while updating the database.
+ */
+const createOrUpdateStudentAttendance = async (StudentAttendanceSchemaBody) => {
+  const { scode, classId, sectionId, date, entries } = StudentAttendanceSchemaBody;
+  const existingAttendance = await StudentAttendanceSchema.findOne({ scode, classId, sectionId, date });
+  if (existingAttendance) {
+    const updateData = await updateStudentAttendance(scode, classId, sectionId, date, entries);
+    return updateData;
+  }
+  const createData = await createStudentAttendanceNew(StudentAttendanceSchemaBody);
+  return createData;
+};
+
 module.exports = {
   createStudentAttendance,
   getAllStudentAttendance,
@@ -804,4 +822,5 @@ module.exports = {
   getAttendanceStats,
   // getClasswiseStudentAttendanceList,
   updateStudentAttendance,
+  createOrUpdateStudentAttendance,
 };

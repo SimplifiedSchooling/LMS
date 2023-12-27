@@ -89,6 +89,15 @@ const updateAttendanceStatusAndRemark = catchAsync(async (req, res) => {
   res.status(httpStatus.OK).json({ success: true, message: 'Attendance updated successfully' });
 });
 
+const createOrUpdateStudentAttendance = catchAsync(async (req, res) => {
+  const StudentAttendanceSchemaBody = req.body;
+  const result = await StudentAttendanceService.createOrUpdateStudentAttendance(StudentAttendanceSchemaBody);
+  if (!result) {
+    throw new ApiError(httpStatus.INTERNAL_SERVER_ERROR, 'Failed to create or update Student attendance');
+  }
+  res.status(httpStatus.OK).json({ success: true, message: 'Student attendance created or updated successfully' });
+});
+
 module.exports = {
   createStudentAttendance,
   getAllStudentAttendance,
@@ -101,4 +110,5 @@ module.exports = {
   getClasswiseAttendanceStudentList,
   // getAttendanceStatsController,
   updateAttendanceStatusAndRemark,
+  createOrUpdateStudentAttendance,
 };

@@ -1,4 +1,5 @@
 const httpStatus = require('http-status');
+const mongoose = require('mongoose');
 const { RecordedBroadcast } = require('../models');
 const ApiError = require('../utils/ApiError');
 
@@ -74,6 +75,45 @@ const deleteRecordedBroadcastById = async (recordedBroadcastId) => {
   return recordedBroadcast;
 };
 
+/**
+ * get RecordedBroadcast by bookId
+ * @param {ObjectId} bookId
+ * @returns {Promise<RecordedBroadcast>}
+ */
+
+const getRecordedBroadcastsByBookId = async (bookId) => {
+  const chaptersData = await RecordedBroadcast.aggregate([
+    { $match: { bookId: mongoose.Types.ObjectId(bookId) } },
+    {
+      $group: {
+        _id: '$chapterId',
+        broadcasts: {
+          $push: {
+            _id: '$_id',
+            title: '$title',
+            date: '$date',
+            time: '$time',
+            boardId: '$boardId',
+            mediumId: '$mediumId',
+            classId: '$classId',
+            subjectId: '$subjectId',
+            bookId: '$bookId',
+            chapterId: '$chapterId',
+            presenterName: '$presenterName',
+            studio: '$studio',
+            liveStreamingPath: '$liveStreamingPath',
+            type: '$type',
+            landscapeImage: '$landscapeImage',
+            portraitImage: '$portraitImage',
+          },
+        },
+      },
+    },
+  ]);
+
+  return chaptersData;
+};
+
 module.exports = {
   createRecordedBroadcast,
   getAllRecordedBroadcast,
@@ -81,4 +121,5 @@ module.exports = {
   updateRecordedBroadcastById,
   deleteRecordedBroadcastById,
   getRecordedBroadcastByFilter,
+  getRecordedBroadcastsByBookId,
 };

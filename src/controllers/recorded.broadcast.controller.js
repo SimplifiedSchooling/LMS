@@ -54,6 +54,11 @@ const getRecordedBroadcastByFilter = catchAsync(async (req, res) => {
   res.send(data);
 });
 
+const getRecordedBroadcastsByBookId = catchAsync(async (req, res) => {
+  const { bookId } = req.params;
+  const chaptersData = await recordedBroadcastService.getRecordedBroadcastsByBookId(bookId);
+  res.status(200).json({ chaptersData });
+});
 module.exports = {
   createRecordedBroadcast,
   getAllRecordedBroadcast,
@@ -61,4 +66,5 @@ module.exports = {
   updateRecordedBroadcastById,
   deleteRecordedBroadcastById,
   getRecordedBroadcastByFilter,
+  getRecordedBroadcastsByBookId,
 };

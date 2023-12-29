@@ -52,6 +52,7 @@ router
     validate(recordedBroadcastValidation.getRecordedBroadcastByFilter),
     recordedBroadcastController.getRecordedBroadcastByFilter
   );
+router.get('/getrecordedvideo/:bookId', recordedBroadcastController.getRecordedBroadcastsByBookId);
 
 module.exports = router;
 /**
@@ -175,6 +176,52 @@ module.exports = router;
 
 /**
  * @swagger
+ * /recordedbroadcast/getrecordedvideo/{bookId}:
+ *   get:
+ *     summary: Get recorded broadcasts grouped by chapters for a given bookId
+ *     tags: [RecordedBroadcast]
+ *     parameters:
+ *       - in: path
+ *         name: bookId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: ID of the book
+ *     responses:
+ *       200:
+ *         description: Successfully retrieved recorded broadcasts
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 chaptersData:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       _id:
+ *                         type: string
+ *                       broadcasts:
+ *                         type: array
+ *                         items:
+ *                           type: object
+ *                           properties:
+ *                             _id:
+ *                               type: string
+ *                             title:
+ *                               type: string
+ *                             date:
+ *                               type: string
+ *                             time:
+ *                               type: string
+ *                             presenterName:
+ *                               type: string
+ *                             # Add other fields as needed
+ */
+
+/**
+ * @swagger
  * components:
  *   schemas:
  *     RecordedBroadcast:
@@ -192,6 +239,12 @@ module.exports = router;
  *         subjectId:
  *           type: string
  *           description: ID of the subject.
+ *         bookId:
+ *           type: string
+ *           description: ID of the book.
+ *         chapterId:
+ *           type: string
+ *           description: ID of the chapter.
  *         studio:
  *           type: string
  *           description: ID of the studio.
@@ -226,6 +279,8 @@ module.exports = router;
  *         mediumId: "6516761d9cee04ae5df9fb6f"
  *         classId: "6516761d9cee04ae5df9fb6f"
  *         subjectId: "6516761d9cee04ae5df9fb6f"
+ *         bookId: "6516761d9cee04ae5df9fb6f"
+ *         chapterId: "6516761d9cee04ae5df9fb6f"
  *         studio: "6516761d9cee04ae5df9fb6f"
  *         liveStreamingPath: "rtmp://example.com/live/stream"
  *         date: "2023-01-01"
@@ -256,6 +311,12 @@ module.exports = router;
  *         subjectId:
  *           type: string
  *           description: ID of the subject.
+ *         bookId:
+ *           type: string
+ *           description: ID of the book.
+ *         chapterId:
+ *           type: string
+ *           description: ID of the chapter.
  *         studio:
  *           type: string
  *           description: ID of the studio.
@@ -289,6 +350,8 @@ module.exports = router;
  *         boardId: "6516761d9cee04ae5df9fb6f"
  *         mediumId: "6516761d9cee04ae5df9fb6f"
  *         classId: "6516761d9cee04ae5df9fb6f"
+ *         bookId: "6516761d9cee04ae5df9fb6f"
+ *         chapterId: "6516761d9cee04ae5df9fb6f"
  *         subjectId: "6516761d9cee04ae5df9fb6f"
  *         studio: "6516761d9cee04ae5df9fb6f"
  *         liveStreamingPath: "rtmp://example.com/live/stream"

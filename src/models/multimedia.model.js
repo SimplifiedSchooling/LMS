@@ -19,6 +19,7 @@ const multimediaSchema = mongoose.Schema(
     },
     multimediaType: {
       type: String,
+      enum: ['multimedia', 'lecture'],
     },
     videoType: {
       type: String,

@@ -77,8 +77,8 @@ const deleteMultimedia = catchAsync(async (req, res) => {
 });
 
 const getMultimediaByBookId = catchAsync(async (req, res) => {
-  const { bookId } = req.params;
-  const chaptersData = await multimediaService.getMultimediaByBookId(bookId);
+  const { bookId, mediatype } = req.params;
+  const chaptersData = await multimediaService.getMultimediaByBookId(bookId, mediatype);
   res.status(200).json({ chaptersData });
 });
 

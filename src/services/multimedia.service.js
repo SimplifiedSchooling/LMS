@@ -101,12 +101,13 @@ const deleteMultimediaById = async (multimediaId) => {
 /**
  * get Multimedia by bookId
  * @param {ObjectId} bookId
+ * @param {String} multimediaType
  * @returns {Promise<Multimedia>}
  */
 
-const getMultimediaByBookId = async (bookId) => {
+const getMultimediaByBookId = async (bookId, multimediaType) => {
   const chaptersData = await Multimedia.aggregate([
-    { $match: { bookId: mongoose.Types.ObjectId(bookId) } },
+    { $match: { bookId: mongoose.Types.ObjectId(bookId), multimediaType } },
     {
       $group: {
         _id: '$chapterId',

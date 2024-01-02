@@ -27,7 +27,7 @@ router
 router
   .route('/getMultimedia/:chapterId')
   .get(validate(multimediaValidation.getMultimediaByChaperId), multimediaController.getMultimediaByChaper);
-router.get('/getmultimediabybookid/:bookId', multimediaController.getMultimediaByBookId);
+router.get('/getmultimediabybookid/:bookId/:mediatype', multimediaController.getMultimediaByBookId);
 
 module.exports = router;
 
@@ -420,7 +420,7 @@ module.exports = router;
 
 /**
  * @swagger
- * /multimedia/getmultimediabybookid/{bookId}:
+ * /multimedia/getmultimediabybookid/{bookId}/{mediatype}:
  *   get:
  *     summary: Get multimedia grouped by chapters for a given bookId
  *     tags: [Multimedia]
@@ -431,6 +431,12 @@ module.exports = router;
  *         schema:
  *           type: string
  *         description: ID of the book
+ *       - in: path
+ *         name: mediatype
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: mediatype
  *     responses:
  *       200:
  *         description: Successfully retrieved multimedia

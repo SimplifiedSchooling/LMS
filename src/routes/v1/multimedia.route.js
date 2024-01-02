@@ -27,6 +27,7 @@ router
 router
   .route('/getMultimedia/:chapterId')
   .get(validate(multimediaValidation.getMultimediaByChaperId), multimediaController.getMultimediaByChaper);
+router.get('/getmultimediabybookid/:bookId', multimediaController.getMultimediaByBookId);
 
 module.exports = router;
 
@@ -390,7 +391,7 @@ module.exports = router;
  */
 /**
  * @swagger
- * /multimedia/getMultimedia/{chapterId}:
+ * /multimedia/getmultimedia/{chapterId}:
  *   get:
  *     summary: Get a multimedia by chapterId
  *     tags: [Multimedia]
@@ -415,4 +416,88 @@ module.exports = router;
  *         $ref: '#/components/responses/Forbidden'
  *       "404":
  *         $ref: '#/components/responses/NotFound'
+ */
+
+/**
+ * @swagger
+ * /multimedia/getmultimediabybookid/{bookId}:
+ *   get:
+ *     summary: Get multimedia grouped by chapters for a given bookId
+ *     tags: [Multimedia]
+ *     parameters:
+ *       - in: path
+ *         name: bookId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: ID of the book
+ *     responses:
+ *       200:
+ *         description: Successfully retrieved multimedia
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 chaptersData:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       _id:
+ *                         type: string
+ *                       multimedia:
+ *                         type: array
+ *                         items:
+ *                           type: object
+ *                           properties:
+ *                             _id:
+ *                               type: string
+ *                             lessionName:
+ *                               type: string
+ *                             multimediaType:
+ *                               type: string
+ *                             order:
+ *                               type: number
+ *                             presenterName:
+ *                               type: string
+ *                             icon1:
+ *                               type: string
+ *                             icon2:
+ *                               type: string
+ *                             path:
+ *                               type: string
+ *                             videoType:
+ *                               type: string
+ *                             boardId:
+ *                               type: string
+ *                             mediumId:
+ *                               type: string
+ *                             classId:
+ *                               type: string
+ *                             subjectId:
+ *                               type: string
+ *                             bookId:
+ *                               type: string
+ *                             chapterId:
+ *                               type: string
+ *               example:
+ *                 chaptersData:
+ *                   - _id: "someChapterId"
+ *                     multimedia:
+ *                       - _id: "someMultimediaId"
+ *                         lessionName: "Some Lesson"
+ *                         multimediaType: "Video"
+ *                         order: 1
+ *                         presenterName: "Presenter"
+ *                         icon1: "icon1.jpg"
+ *                         icon2: "icon2.jpg"
+ *                         path: "video.mp4"
+ *                         videoType: "MP4"
+ *                         boardId: "someBoardId"
+ *                         mediumId: "someMediumId"
+ *                         classId: "someClassId"
+ *                         subjectId: "someSubjectId"
+ *                         bookId: "someBookId"
+ *                         chapterId: "someChapterId"
  */

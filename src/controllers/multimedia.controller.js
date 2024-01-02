@@ -76,6 +76,12 @@ const deleteMultimedia = catchAsync(async (req, res) => {
   res.status(httpStatus.NO_CONTENT).send();
 });
 
+const getMultimediaByBookId = catchAsync(async (req, res) => {
+  const { bookId } = req.params;
+  const chaptersData = await multimediaService.getMultimediaByBookId(bookId);
+  res.status(200).json({ chaptersData });
+});
+
 module.exports = {
   createMultimedia,
   getMultimedia,
@@ -85,4 +91,5 @@ module.exports = {
   deleteMultimedia,
   getMultimediaByType,
   getMultimediaByChaper,
+  getMultimediaByBookId,
 };

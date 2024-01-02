@@ -1,4 +1,5 @@
 const httpStatus = require('http-status');
+const mongoose = require('mongoose');
 const { Multimedia } = require('../models');
 const ApiError = require('../utils/ApiError');
 
@@ -97,6 +98,58 @@ const deleteMultimediaById = async (multimediaId) => {
   return multimedia;
 };
 
+/**
+ * get Multimedia by bookId
+ * @param {ObjectId} bookId
+ * @returns {Promise<Multimedia>}
+ */
+
+const getMultimediaByBookId = async (bookId) => {
+  const chaptersData = await Multimedia.aggregate([
+    { $match: { bookId: mongoose.Types.ObjectId(bookId) } },
+    {
+      $group: {
+        _id: '$chapterId',
+        multimediaData: {
+          $push: {
+            _id: '$_id',
+            lessionName: '$lessionName',
+            multimediaType: '$multimediaType',
+            boardId: '$boardId',
+            mediumId: '$mediumId',
+            classId: '$classId',
+            subjectId: '$subjectId',
+            bookId: '$bookId',
+            chapterId: '$chapterId',
+            order: '$order',
+            path: '$path',
+            videoType: '$videoType',
+            icon1: '$icon1',
+            icon2: '$icon2',
+          },
+        },
+      },
+    },
+    {
+      $lookup: {
+        from: 'chapters', // Assuming your Chapter collection is named 'chapters'
+        localField: '_id',
+        foreignField: '_id',
+        as: 'chapterData',
+      },
+    },
+    {
+      $unwind: '$chapterData',
+    },
+    {
+      $addFields: {
+        'broadcasts.chapterName': '$chapterData.chapterName',
+      },
+    },
+  ]);
+
+  return chaptersData;
+};
 module.exports = {
   createMultimedia,
   queryMultimedia,
@@ -106,4 +159,5 @@ module.exports = {
   getMultimediaById,
   getMultimediaByType,
   getMultimediaByChaperId,
+  getMultimediaByBookId,
 };

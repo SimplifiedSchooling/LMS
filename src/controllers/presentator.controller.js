@@ -22,7 +22,7 @@ const getAllPresentator = catchAsync(async (req, res) => {
 const getPresentator = catchAsync(async (req, res) => {
   const singleStudio = await presentatorService.getPresentatorById(req.params.presentatorId);
   if (!singleStudio) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'Chapter not found');
+    throw new ApiError(httpStatus.NOT_FOUND, 'Presenter not found');
   }
   res.send(singleStudio);
 });

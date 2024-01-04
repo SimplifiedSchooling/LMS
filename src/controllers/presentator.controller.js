@@ -3,8 +3,11 @@ const pick = require('../utils/pick');
 const ApiError = require('../utils/ApiError');
 const catchAsync = require('../utils/catchAsync');
 const { presentatorService } = require('../services');
+const { filterPath } = require('../utils/s3middleware');
 
 const createPresentator = catchAsync(async (req, res) => {
+  const { file } = req;
+  req.body.photo = await filterPath(file.location);
   const newStudio = await presentatorService.createPresentator(req.body);
   res.status(httpStatus.CREATED).send(newStudio);
 });
@@ -25,6 +28,10 @@ const getPresentator = catchAsync(async (req, res) => {
 });
 
 const updatePresentator = catchAsync(async (req, res) => {
+  const { file } = req;
+  if (file) {
+    req.body.photo = await filterPath(file.location);
+  }
   const updatedStudio = await presentatorService.updatePresentatorById(req.params.presentatorId, req.body);
   res.send(updatedStudio);
 });

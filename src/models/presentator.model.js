@@ -5,23 +5,15 @@ const presentatorSchema = mongoose.Schema(
   {
     presentatorName: {
       type: String,
-      trim: true,
-      required: true,
     },
-    qualification: {
+    presentatorType: {
       type: String,
-      required: true,
-      trim: true,
     },
-    experience: {
+    presentatorBio: {
       type: String,
-      required: true,
-      trim: true,
     },
-    schoolName: {
+    photo: {
       type: String,
-      required: true,
-      trim: true,
     },
   },
   {

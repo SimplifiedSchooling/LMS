@@ -4,9 +4,9 @@ const { objectId } = require('./custom.validation');
 const createPresentator = {
   body: Joi.object().keys({
     presentatorName: Joi.string().required(),
-    qualification: Joi.string().required(),
-    experience: Joi.string().required(),
-    schoolName: Joi.string().required(),
+    presentatorType: Joi.string().required(),
+    presentatorBio: Joi.string().required(),
+    file: Joi.string(),
   }),
 };
 
@@ -25,25 +25,36 @@ const getAllPresentator = {
   }),
 };
 
-const updatePresentatorById = {
-  params: Joi.object().keys({
-    presentatorId: Joi.required().custom(objectId),
-  }),
-  body: Joi.object()
-    .keys({
-      presentatorName: Joi.string().required(),
-      qualification: Joi.string().required(),
-      experience: Joi.string().required(),
-      schoolName: Joi.string().required(),
-    })
-    .min(2),
-};
+// const updatePresentatorById = {
+//   params: Joi.object().keys({
+//     presentatorId: Joi.required().custom(objectId),
+//   }),
+//   body: Joi.object().keys({
+//     presentatorName: Joi.string(),
+//     presentatorType: Joi.string(),
+//     presentatorBio: Joi.string(),
+//     file: Joi.string(),
+//   }),
+// };
 const deletePresentatorById = {
   params: Joi.object().keys({
     presentatorId: Joi.string().custom(objectId),
   }),
 };
 
+const updatePresentatorById = {
+  params: Joi.object().keys({
+    presentatorId: Joi.required().custom(objectId).required(),
+  }),
+  body: Joi.object()
+    .keys({
+      presentatorName: Joi.string(),
+      presentatorType: Joi.string(),
+      presentatorBio: Joi.string(),
+      file: Joi.string(),
+    })
+    .min(1),
+};
 module.exports = {
   createPresentator,
   getPresentator,

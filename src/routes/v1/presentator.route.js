@@ -2,17 +2,26 @@ const express = require('express');
 const validate = require('../../middlewares/validate');
 const presentatorValidation = require('../../validations/presentator.validation');
 const presentatorController = require('../../controllers/presentator.controller');
+const { createS3Middleware } = require('../../utils/s3middleware');
 
 const router = express.Router();
 router
   .route('/')
-  .post(validate(presentatorValidation.createPresentator), presentatorController.createPresentator)
+  .post(
+    createS3Middleware('lmscontent'),
+    validate(presentatorValidation.createPresentator),
+    presentatorController.createPresentator
+  )
   .get(validate(presentatorValidation.getAllPresentator), presentatorController.getAllPresentator);
 
 router
   .route('/:presentatorId')
   .get(validate(presentatorValidation.getPresentator), presentatorController.getPresentator)
-  .patch(validate(presentatorValidation.updatePresentatorById), presentatorController.updatePresentator)
+  .patch(
+    createS3Middleware('lmscontent'),
+    validate(presentatorValidation.updatePresentatorById),
+    presentatorController.updatePresentator
+  )
   .delete(validate(presentatorValidation.deletePresentatorById), presentatorController.deletePresentator);
 
 module.exports = router;
@@ -33,9 +42,24 @@ module.exports = router;
  *       description: Presentator object to be created
  *       required: true
  *       content:
- *         application/json:
+ *         multipart/form-data:
  *           schema:
- *             $ref: '#/components/schemas/PresentatorInput'
+ *             type: object
+ *             properties:
+ *               presentatorName:
+ *                 type: string
+ *               file:
+ *                 type: file
+ *                 format: binary
+ *               presentatorType:
+ *                 type: string
+ *               presentatorBio:
+ *                 type: string
+ *             example:
+ *               presentatorName: Amit Mishra
+ *               presentatorType: Teacher , Director
+ *               presentatorBio: English , Hindi
+ *               file: e892f517-c5a4-4b04-b62c-1054ca09e61c32580.jpg
  *     responses:
  *       200:
  *         description: Presentator created successfully
@@ -104,15 +128,31 @@ module.exports = router;
  *     parameters:
  *       - in: path
  *         name: presentatorId
- *         required: true
+ *         required: false
  *         schema:
  *           type: string
  *         description: ID of the presentator
  *     requestBody:
+ *       required: false
  *       content:
- *         application/json:
+ *         multipart/form-data:
  *           schema:
- *             $ref: '#/components/schemas/PresentatorupdateInput'
+ *             type: object
+ *             properties:
+ *               presentatorName:
+ *                 type: string
+ *               file:
+ *                 type: file
+ *                 format: binary
+ *               presentatorType:
+ *                 type: string
+ *               presentatorBio:
+ *                 type: string
+ *             example:
+ *               presentatorName: Anum Mishra
+ *               presentatorType: teacher
+ *               presentatorBio: Hindi
+ *               file: e892f517-c5a4-4b04-b62c-1054ca09e61c32580.jpg
  *     responses:
  *       200:
  *         description: Successful response
@@ -183,15 +223,16 @@ module.exports = router;
  *       properties:
  *         presentatorName:
  *           type: string
- *         qualification:
+ *         presentatorType:
  *           type: string
- *         experience:
+ *         presentatorBio:
  *           type: string
- *         schoolName:
- *           type: string
+ *         file:
+ *           type: file
+ *           format: binary
  *       example:
  *         presentatorName: Anil Sharma
- *         qualification: Msc ,Bsc
- *         experience: 3 years
- *         schoolName: Shastri school lucknow
+ *         presentatorType: Teacher , Director
+ *         presentatorBio: English
+ *         file: e892f517-c5a4-4b04-b62c-1054ca09e61c32580.jpg
  */

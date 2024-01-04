@@ -53,6 +53,9 @@ router
     recordedBroadcastController.getRecordedBroadcastByFilter
   );
 router.get('/getrecordedvideo/:bookId', recordedBroadcastController.getRecordedBroadcastsByBookId);
+router
+  .route('/filterby/:boardId/:classId/:subjectId/:mediumId/:chapterId/:bookId')
+  .get(validate(recordedBroadcastValidation.paramsFilters), recordedBroadcastController.getRecordedBroadcast);
 
 module.exports = router;
 /**
@@ -218,6 +221,50 @@ module.exports = router;
  *                             presenterName:
  *                               type: string
  *                             # Add other fields as needed
+ */
+
+/**
+ * @swagger
+ * /recordedbroadcast/filterby/{boardId}/{classId}/{subjectId}/{mediumId}/{chapterId}/{bookId}:
+ *   get:
+ *     summary: Get recorded broadcast by filters
+ *     tags: [RecordedBroadcast]
+ *     parameters:
+ *       - in: path
+ *         name: boardId
+ *         required: true
+ *         schema:
+ *           type: string
+ *       - in: path
+ *         name: classId
+ *         required: true
+ *         schema:
+ *           type: string
+ *       - in: path
+ *         name: subjectId
+ *         required: true
+ *         schema:
+ *           type: string
+ *       - in: path
+ *         name: mediumId
+ *         required: true
+ *         schema:
+ *           type: string
+ *       - in: path
+ *         name: chapterId
+ *         required: true
+ *         schema:
+ *           type: string
+ *       - in: path
+ *         name: bookId
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       '200':
+ *         description: Successful operation
+ *       '404':
+ *         description: No recorded broadcast found
  */
 
 /**

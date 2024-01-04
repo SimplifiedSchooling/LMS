@@ -168,6 +168,10 @@ const getRecordedBroadcastsByBookId = async (bookId) => {
   return chaptersData;
 };
 
+const getRecordedBroadcast = (params) => {
+  return RecordedBroadcast.find(params).lean();
+};
+
 module.exports = {
   createRecordedBroadcast,
   getAllRecordedBroadcast,
@@ -176,4 +180,5 @@ module.exports = {
   deleteRecordedBroadcastById,
   getRecordedBroadcastByFilter,
   getRecordedBroadcastsByBookId,
+  getRecordedBroadcast,
 };

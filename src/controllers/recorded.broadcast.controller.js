@@ -59,6 +59,28 @@ const getRecordedBroadcastsByBookId = catchAsync(async (req, res) => {
   const chaptersData = await recordedBroadcastService.getRecordedBroadcastsByBookId(bookId);
   res.status(200).json({ chaptersData });
 });
+
+const getRecordedBroadcast = catchAsync(async (req, res) => {
+  const { boardId, classId, subjectId, mediumId, chapterId, bookId } = req.params;
+
+  const params = {
+    boardId,
+    classId,
+    subjectId,
+    mediumId,
+    chapterId,
+    bookId,
+  };
+
+  const recordedBroadcast = await recordedBroadcastService.getRecordedBroadcast(params);
+
+  if (!recordedBroadcast) {
+    return res.status(404).json({ message: 'No recorded broadcast found for the given parameters.' });
+  }
+
+  return res.json(recordedBroadcast);
+});
+
 module.exports = {
   createRecordedBroadcast,
   getAllRecordedBroadcast,
@@ -67,4 +89,5 @@ module.exports = {
   deleteRecordedBroadcastById,
   getRecordedBroadcastByFilter,
   getRecordedBroadcastsByBookId,
+  getRecordedBroadcast,
 };

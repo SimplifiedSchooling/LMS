@@ -201,17 +201,18 @@ module.exports = router;
  *       properties:
  *         presentatorName:
  *           type: string
- *         qualification:
+ *         presentatorType:
  *           type: string
- *         experience:
+ *         presentatorBio:
  *           type: string
- *         schoolName:
- *           type: string
+ *         file:
+ *           type: file
+ *           format: binary
  *       example:
  *         presentatorName: Anil Sharma
- *         qualification: Msc ,Bsc
- *         experience: 3 years
- *         schoolName: Shastri school lucknow
+ *         presentatorType: Teacher , Director
+ *         presentatorBio: English
+ *         file: e892f517-c5a4-4b04-b62c-1054ca09e61c32580.jpg
  */
 
 /**

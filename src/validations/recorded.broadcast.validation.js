@@ -71,6 +71,14 @@ const getRecordedBroadcastByFilter = {
   }),
 };
 
+const paramsFilters = {
+  boardId: Joi.required().custom(objectId),
+  classId: Joi.required().custom(objectId),
+  subjectId: Joi.required().custom(objectId),
+  mediumId: Joi.required().custom(objectId),
+  chapterId: Joi.required().custom(objectId),
+  bookId: Joi.required().custom(objectId),
+};
 module.exports = {
   createRecordedBroadcast,
   getRecordedBroadcast,
@@ -78,4 +86,5 @@ module.exports = {
   updateRecordedBroadcastById,
   deleteRecordedBroadcastById,
   getRecordedBroadcastByFilter,
+  paramsFilters,
 };

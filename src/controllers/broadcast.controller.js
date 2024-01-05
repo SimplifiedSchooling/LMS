@@ -30,8 +30,8 @@ const updateboardcast = catchAsync(async (req, res) => {
 });
 
 const deleteboardcast = catchAsync(async (req, res) => {
-  await broadcastService.deleteBoardcastById(req.params.broadcastId);
-  res.status(httpStatus.NO_CONTENT).send();
+  const data = await broadcastService.deleteBoardcastById(req.params.broadcastId);
+  res.send(data);
 });
 
 module.exports = {

@@ -42,7 +42,7 @@ const deleteRecordedBroadcastById = catchAsync(async (req, res) => {
   const deletedRecordedBroadcast = await recordedBroadcastService.deleteRecordedBroadcastById(
     req.params.recordedBroadcastId
   );
-  res.status(httpStatus.NO_CONTENT).send(deletedRecordedBroadcast);
+  res.send(deletedRecordedBroadcast);
 });
 
 const getRecordedBroadcastByFilter = catchAsync(async (req, res) => {

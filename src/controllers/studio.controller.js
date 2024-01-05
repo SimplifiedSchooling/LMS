@@ -31,7 +31,7 @@ const updateStudio = catchAsync(async (req, res) => {
 
 const deleteStudio = catchAsync(async (req, res) => {
   const deletedStudio = await studioService.deleteStudioById(req.params.studioId);
-  res.status(httpStatus.NO_CONTENT).send(deletedStudio);
+  res.send(deletedStudio);
 });
 
 module.exports = {

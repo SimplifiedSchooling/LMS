@@ -30,8 +30,8 @@ const updateUser = catchAsync(async (req, res) => {
 });
 
 const deleteUser = catchAsync(async (req, res) => {
-  await videoService.deleteUserById(req.params.userId);
-  res.status(httpStatus.NO_CONTENT).send();
+  const data = await videoService.deleteUserById(req.params.userId);
+  res.send(data);
 });
 
 module.exports = {

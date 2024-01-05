@@ -48,12 +48,13 @@ const getStudentyId = async (studentId) => {
  * Get students by class and section, scode
  * @param {string} classId - The ID of the class to filter by.
  * @param {string} sectionId - The ID of the section to filter by.
+ * @param {string} sessionId - The ID of the session to filter by.
  * @param {string} scode - The ID of the scode to filter by.
  * @returns {Promise<StudentSession>} - An array of StudentSession objects.
  * @throws {Error} - If there is an error while querying the database.
  */
 
-const getStudentsByClassAndSection = async (scode, classId, sectionId, date) => {
+const getStudentsByClassAndSection = async (scode, classId, sectionId, sessionId, date) => {
   const attendanceData = await StudentAttendanceSchema.findOne({
     scode,
     classId: mongoose.Types.ObjectId(classId),
@@ -68,6 +69,7 @@ const getStudentsByClassAndSection = async (scode, classId, sectionId, date) => 
           scode,
           classId: mongoose.Types.ObjectId(classId),
           sectionId: mongoose.Types.ObjectId(sectionId),
+          sessionId: mongoose.Types.ObjectId(sessionId),
         },
       },
       {
@@ -218,12 +220,13 @@ const getStudentsByClassAndSection = async (scode, classId, sectionId, date) => 
  * Get students by class and section, scode
  * @param {string} classId - The ID of the class to filter by.
  * @param {string} sectionId - The ID of the section to filter by.
+ * @param {string} sessionId - The ID of the session to filter by.
  * @param {string} scode - The ID of the scode to filter by.
  * @returns {Promise<StudentSession>} - An array of StudentSession objects.
  * @throws {Error} - If there is an error while querying the database.
  */
 
-const getStudentsByClassAndSectionForLectureAttendance = async (scode, classId, sectionId, date) => {
+const getStudentsByClassAndSectionForLectureAttendance = async (scode, classId, sectionId, sessionId, date) => {
   const attendanceData = await LectureAttendance.findOne({
     scode,
     classId: mongoose.Types.ObjectId(classId),
@@ -237,6 +240,7 @@ const getStudentsByClassAndSectionForLectureAttendance = async (scode, classId, 
           scode,
           classId: mongoose.Types.ObjectId(classId),
           sectionId: mongoose.Types.ObjectId(sectionId),
+          sessionId: mongoose.Types.ObjectId(sessionId),
         },
       },
       {
@@ -387,18 +391,20 @@ const getStudentsByClassAndSectionForLectureAttendance = async (scode, classId, 
  * Get students list by class and section, scode
  * @param {string} classId - The ID of the class to filter by.
  * @param {string} sectionId - The ID of the section to filter by.
+ * @param {string} sessionId - The ID of the session to filter by.
  * @param {string} scode - The ID of the scode to filter by.
  * @returns {Promise<StudentSession>} - An array of StudentSession objects.
  * @throws {Error} - If there is an error while querying the database.
  */
 
-const getStudentsListByClassAndSection = async (scode, classId, sectionId) => {
+const getStudentsListByClassAndSection = async (scode, classId, sectionId, sessionId) => {
   const students = await StudentSession.aggregate([
     {
       $match: {
         scode,
         classId: mongoose.Types.ObjectId(classId),
         sectionId: mongoose.Types.ObjectId(sectionId),
+        sessionId: mongoose.Types.ObjectId(sessionId),
       },
     },
     {

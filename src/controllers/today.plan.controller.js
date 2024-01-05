@@ -36,8 +36,8 @@ const updatePlan = catchAsync(async (req, res) => {
 });
 
 const deletePlan = catchAsync(async (req, res) => {
-  await planvideoService.deletePlanById(req.params.planId);
-  res.status(httpStatus.NO_CONTENT).send();
+  const data = await planvideoService.deletePlanById(req.params.planId);
+  res.send(data);
 });
 
 module.exports = {

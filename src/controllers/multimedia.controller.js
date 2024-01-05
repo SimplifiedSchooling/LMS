@@ -72,8 +72,8 @@ const updateMultimedia = catchAsync(async (req, res) => {
 });
 
 const deleteMultimedia = catchAsync(async (req, res) => {
-  await multimediaService.deleteMultimediaById(req.params.multimediaId);
-  res.status(httpStatus.NO_CONTENT).send();
+  const data = await multimediaService.deleteMultimediaById(req.params.multimediaId);
+  res.send(data);
 });
 
 const getMultimediaByBookId = catchAsync(async (req, res) => {

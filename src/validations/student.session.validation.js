@@ -34,6 +34,7 @@ const getAllStudentByclassAndsection = {
     scode: Joi.string().required(),
     classId: Joi.string().required(),
     sectionId: Joi.string().required(),
+    sessionId: Joi.string().required(),
     date: Joi.string().required(),
   }),
 };
@@ -43,6 +44,7 @@ const getAllStudentListByclassAndsection = {
     scode: Joi.string().required(),
     classId: Joi.string().required(),
     sectionId: Joi.string().required(),
+    sessionId: Joi.string().required(),
   }),
 };
 

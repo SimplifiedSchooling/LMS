@@ -38,7 +38,7 @@ const updatePresentator = catchAsync(async (req, res) => {
 
 const deletePresentator = catchAsync(async (req, res) => {
   const deletedStudio = await presentatorService.deletePresentatorById(req.params.presentatorId);
-  res.status(httpStatus.NO_CONTENT).send(deletedStudio);
+  res.send(deletedStudio);
 });
 
 module.exports = {

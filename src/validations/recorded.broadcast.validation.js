@@ -16,8 +16,6 @@ const createRecordedBroadcast = {
     title: Joi.string().required(),
     type: Joi.string().required(),
     presenterName: Joi.string().required(),
-    landscapeImage: Joi.string(),
-    portraitImage: Joi.string(),
   }),
 };
 
@@ -54,8 +52,6 @@ const updateRecordedBroadcastById = {
     title: Joi.string(),
     type: Joi.string(),
     presenterName: Joi.string(),
-    landscapeImage: Joi.string(),
-    portraitImage: Joi.string(),
   }),
 };
 const deleteRecordedBroadcastById = {

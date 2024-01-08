@@ -1,30 +1,15 @@
 const express = require('express');
-const multer = require('multer');
-const path = require('path');
-const { v4: uuidv4 } = require('node-uuid');
 const validate = require('../../middlewares/validate');
 const recordedBroadcastValidation = require('../../validations/recorded.broadcast.validation');
 const recordedBroadcastController = require('../../controllers/recorded.broadcast.controller');
+const { upload } = require('../../utils/cdn');
 
 const router = express.Router();
-
-const storage = multer.diskStorage({
-  destination: 'uploads/',
-  filename: (req, file, callback) => {
-    const uniqueFileName = `${uuidv4()}${path.extname(file.originalname)}`;
-    callback(null, uniqueFileName);
-  },
-});
-
-const upload = multer({ storage });
 
 router
   .route('/')
   .post(
-    upload.fields([
-      { name: 'landscapeImage', maxCount: 1 },
-      { name: 'portraitImage', maxCount: 1 },
-    ]),
+    upload.array('files', 2),
     validate(recordedBroadcastValidation.createRecordedBroadcast),
     recordedBroadcastController.createRecordedBroadcast
   )
@@ -34,10 +19,7 @@ router
   .route('/:recordedBroadcastId')
   .get(validate(recordedBroadcastValidation.getRecordedBroadcast), recordedBroadcastController.getRecordedBroadcastById)
   .patch(
-    upload.fields([
-      { name: 'landscapeImage', maxCount: 1 },
-      { name: 'portraitImage', maxCount: 1 },
-    ]),
+    upload.array('files', 2),
     validate(recordedBroadcastValidation.updateRecordedBroadcastById),
     recordedBroadcastController.updateRecordedBroadcastById
   )
@@ -267,6 +249,74 @@ module.exports = router;
  *         description: No recorded broadcast found
  */
 
+// /**
+//  * @swagger
+//  * components:
+//  *   schemas:
+//  *     RecordedBroadcast:
+//  *       type: object
+//  *       properties:
+//  *         boardId:
+//  *           type: string
+//  *           description: ID of the board.
+//  *         mediumId:
+//  *           type: string
+//  *           description: ID of the medium.
+//  *         classId:
+//  *           type: string
+//  *           description: ID of the class.
+//  *         subjectId:
+//  *           type: string
+//  *           description: ID of the subject.
+//  *         bookId:
+//  *           type: string
+//  *           description: ID of the book.
+//  *         chapterId:
+//  *           type: string
+//  *           description: ID of the chapter.
+//  *         studio:
+//  *           type: string
+//  *           description: ID of the studio.
+//  *         liveStreamingPath:
+//  *           type: string
+//  *           description: Live streaming path.
+//  *         date:
+//  *           type: string
+//  *           description: Date of the broadcast.
+//  *         time:
+//  *           type: string
+//  *           description: Time of the broadcast.
+//  *         title:
+//  *           type: string
+//  *           description: Title of the broadcast.
+//  *         type:
+//  *           type: string
+//  *           description: type of the broadcast.
+//  *         presenterName:
+//  *           type: string
+//  *           description: Presenter's name.
+//  *         files:
+//  *           type: array
+//  *           items:
+//  *           type: string
+//  *           format: binary
+//  *       example:
+//  *         boardId: "6516761d9cee04ae5df9fb6f"
+//  *         mediumId: "6516761d9cee04ae5df9fb6f"
+//  *         classId: "6516761d9cee04ae5df9fb6f"
+//  *         subjectId: "6516761d9cee04ae5df9fb6f"
+//  *         bookId: "6516761d9cee04ae5df9fb6f"
+//  *         chapterId: "6516761d9cee04ae5df9fb6f"
+//  *         studio: "6516761d9cee04ae5df9fb6f"
+//  *         liveStreamingPath: "rtmp://example.com/live/stream"
+//  *         date: "2023-01-01"
+//  *         time: "12:00 PM"
+//  *         title: "Broadcast Title"
+//  *         type: "Broadcast type"
+//  *         presenterName: "Presenter Name"
+//  *         landscapeImage: "https://example.com/landscape.jpg"
+//  *         portraitImage: "https://example.com/portrait.jpg"
+//  */
 /**
  * @swagger
  * components:
@@ -309,18 +359,15 @@ module.exports = router;
  *           description: Title of the broadcast.
  *         type:
  *           type: string
- *           description: type of the broadcast.
+ *           description: Type of the broadcast.
  *         presenterName:
  *           type: string
  *           description: Presenter's name.
- *         landscapeImage:
- *           type: string
- *           format: binary
- *           description: URL of the landscape image.
- *         portraitImage:
- *           type: string
- *           format: binary
- *           description: URL of the portrait image.
+ *         files:
+ *           type: array
+ *           items:
+ *             type: string
+ *             format: binary
  *       example:
  *         boardId: "6516761d9cee04ae5df9fb6f"
  *         mediumId: "6516761d9cee04ae5df9fb6f"
@@ -337,6 +384,9 @@ module.exports = router;
  *         presenterName: "Presenter Name"
  *         landscapeImage: "https://example.com/landscape.jpg"
  *         portraitImage: "https://example.com/portrait.jpg"
+ *         files:
+ *           - "file1.jpg"
+ *           - "file2.mp4"
  */
 
 /**
@@ -381,25 +431,22 @@ module.exports = router;
  *           description: Title of the broadcast.
  *         type:
  *           type: string
- *           description: type of the broadcast.
+ *           description: Type of the broadcast.
  *         presenterName:
  *           type: string
  *           description: Presenter's name.
- *         landscapeImage:
- *           type: string
- *           format: binary
- *           description: URL of the landscape image.
- *         portraitImage:
- *           type: string
- *           format: binary
- *           description: URL of the portrait image.
+ *         files:
+ *           type: array
+ *           items:
+ *             type: string
+ *             format: binary
  *       example:
  *         boardId: "6516761d9cee04ae5df9fb6f"
  *         mediumId: "6516761d9cee04ae5df9fb6f"
  *         classId: "6516761d9cee04ae5df9fb6f"
+ *         subjectId: "6516761d9cee04ae5df9fb6f"
  *         bookId: "6516761d9cee04ae5df9fb6f"
  *         chapterId: "6516761d9cee04ae5df9fb6f"
- *         subjectId: "6516761d9cee04ae5df9fb6f"
  *         studio: "6516761d9cee04ae5df9fb6f"
  *         liveStreamingPath: "rtmp://example.com/live/stream"
  *         date: "2023-01-01"
@@ -409,4 +456,7 @@ module.exports = router;
  *         presenterName: "Presenter Name"
  *         landscapeImage: "https://example.com/landscape.jpg"
  *         portraitImage: "https://example.com/portrait.jpg"
+ *         files:
+ *           - "file1.jpg"
+ *           - "file2.mp4"
  */

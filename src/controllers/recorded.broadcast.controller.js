@@ -32,9 +32,11 @@ const getRecordedBroadcastById = catchAsync(async (req, res) => {
 });
 
 const updateRecordedBroadcastById = catchAsync(async (req, res) => {
-  if (req.file) {
-    req.body = req.file.landscapeImage;
-    req.body = req.file.portraitImage;
+  if (req.files[0] && req.files[0].location) {
+    req.body.landscapeImage = await filterPath(req.files[0].location);
+  }
+  if (req.files[1] && req.files[1].location) {
+    req.body.portraitImage = await filterPath(req.files[1].location);
   }
   const updatedRecordedBroadcast = await recordedBroadcastService.updateRecordedBroadcastById(
     req.params.recordedBroadcastId,
@@ -67,7 +69,6 @@ const getRecordedBroadcastsByBookId = catchAsync(async (req, res) => {
 
 const getRecordedBroadcast = catchAsync(async (req, res) => {
   const { boardId, classId, subjectId, mediumId, chapterId, bookId } = req.params;
-
   const params = {
     boardId,
     classId,
@@ -76,13 +77,10 @@ const getRecordedBroadcast = catchAsync(async (req, res) => {
     chapterId,
     bookId,
   };
-
   const recordedBroadcast = await recordedBroadcastService.getRecordedBroadcast(params);
-
   if (!recordedBroadcast) {
     return res.status(404).json({ message: 'No recorded broadcast found for the given parameters.' });
   }
-
   return res.json(recordedBroadcast);
 });
 

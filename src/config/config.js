@@ -50,8 +50,6 @@ if (error) {
 module.exports = {
   env: envVars.NODE_ENV,
   port: envVars.NODE_ENV === 'production' ? 3001 : 4003 || 3000,
-  // mongoose: {
-  // url: envVars.MONGODB_URL + (envVars.NODE_ENV === 'test' ? '-test' : ''),
   mongoose: {
     url: (() => {
       switch (envVars.NODE_ENV) {

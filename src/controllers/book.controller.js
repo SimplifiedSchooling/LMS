@@ -44,6 +44,14 @@ const getBookByFilter = catchAsync(async (req, res) => {
   res.send(book);
 });
 
+const getBookChapters = catchAsync(async (req, res) => {
+  const book = await bookService.getBookChapters(req.params.subjectId);
+  if (!book) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'Book not found');
+  }
+  res.send(book);
+});
+
 const updateBook = catchAsync(async (req, res) => {
   const { file } = req;
   if (file) {
@@ -66,4 +74,5 @@ module.exports = {
   deleteBook,
   getBookByFilter,
   getBookBySubjectId,
+  getBookChapters,
 };

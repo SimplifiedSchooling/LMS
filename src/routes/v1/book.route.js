@@ -21,6 +21,7 @@ router
   .get(validate(bookValidation.getBookByFilter), bookController.getBookByFilter);
 
 router.route('/subject/:subjectId').get(validate(bookValidation.getBookBySubjectId), bookController.getBookBySubjectId);
+router.route('/book/chapter/:subjectId').get(bookController.getBookChapters);
 module.exports = router;
 
 /**
@@ -242,6 +243,36 @@ module.exports = router;
 /**
  * @swagger
  * /books/subject/{subjectId}:
+ *   get:
+ *     summary: Get a Book
+ *     tags: [Book]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: subjectId
+ *         required: true
+ *         description: The ID of the subject
+ *         schema:
+ *           type: string
+ *     responses:
+ *       "200":
+ *         description: OK
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Book'
+ *       "401":
+ *         $ref: '#/components/responses/Unauthorized'
+ *       "403":
+ *         $ref: '#/components/responses/Forbidden'
+ *       "404":
+ *         $ref: '#/components/responses/NotFound'
+ */
+
+/**
+ * @swagger
+ * /books/book/chapter/{subjectId}:
  *   get:
  *     summary: Get a Book
  *     tags: [Book]

@@ -1,5 +1,5 @@
 const httpStatus = require('http-status');
-const { Book } = require('../models');
+const { Book, Chapter } = require('../models');
 const ApiError = require('../utils/ApiError');
 
 /**
@@ -52,6 +52,23 @@ const getBookBysubjectId = async (subjectId) => {
   return Book.find({ subjectId });
 };
 
+const getBookChapters = async (subjectId) => {
+  const books = await getBookBysubjectId(subjectId);
+  const formattedData = [];
+  // eslint-disable-next-line no-restricted-syntax
+  for (const book of books) {
+    // eslint-disable-next-line no-await-in-loop
+    const chapters = await Chapter.find({ bookId: book._id });
+    // console.log(chapters);
+    const bookData = {
+      bookName: book.name,
+      bookId: book._id,
+      chapters: chapters.map((chapter) => chapter),
+    };
+    formattedData.push(bookData);
+    return formattedData;
+  }
+};
 /**
  * Update book by id
  * @param {ObjectId} bookId
@@ -90,4 +107,5 @@ module.exports = {
   deleteBookById,
   getBookByFilter,
   getBookBysubjectId,
+  getBookChapters,
 };
